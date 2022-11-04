@@ -45,8 +45,13 @@ def decompose_syllable(syllable: str) -> Syllable:
         TRAILING_CONSONANTS[index_of_trailing_consonant]
     )
 
-def compose(text: str) -> str:
+def compose(text: str, empty_trailing: str = '№') -> str:
     output = ''
+
+    # remove all '№'
+    assert len(empty_trailing) <= 1
+
+    text = text.replace(empty_trailing, '') if empty_trailing else text
 
     iterator = ngram(text, n=4, pad_right=True)
     for first, second, third, fourth in iterator:
@@ -64,7 +69,7 @@ def compose(text: str) -> str:
 
     return output
 
-def decompose(text: str) -> str:
+def decompose(text: str, empty_trailing: str = '') -> str:
     output = ''
 
     for character in text:
@@ -72,7 +77,7 @@ def decompose(text: str) -> str:
             leading_consonant, vowel, trailing_consonant = decompose_syllable(character)
             output += leading_consonant
             output += vowel
-            output += trailing_consonant if trailing_consonant is not None else ''
+            output += trailing_consonant if trailing_consonant is not None else empty_trailing
         else:
             output += character
 

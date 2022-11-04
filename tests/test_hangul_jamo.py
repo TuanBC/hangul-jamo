@@ -1,5 +1,9 @@
 import pytest
 
+# import package from father directory
+import sys
+sys.path.append('..')
+
 from hangul_jamo import is_syllable, is_jamo_character, compose_jamo_characters, decompose_syllable, compose, decompose
 
 def test_is_syllable():
@@ -87,7 +91,10 @@ def test_compose():
     assert compose('Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof') == 'Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof'
 
     assert compose('ㅇㅏ ㄴㅏㄴㅡㄴ ㄱㅡㅓㄴㄷㅔ') == '아 나는 그ㅓㄴ데'
+    assert compose("ㅇㅏㄴㄴㅕㅇㅎㅏㅅㅔㅇㅛ! Hello!") == '안녕하세요! Hello!'
+    assert compose("ㅇㅏㄴㄴㅕㅇㅎㅏ№ㅅㅔ№ㅇㅛ№! Hello!") == '안녕하세요! Hello!'
 
 def test_decompose():
     assert decompose('대한민국은 민주공화국이다.') == 'ㄷㅐㅎㅏㄴㅁㅣㄴㄱㅜㄱㅇㅡㄴ ㅁㅣㄴㅈㅜㄱㅗㅇㅎㅘㄱㅜㄱㅇㅣㄷㅏ.'
+    assert decompose('안녕하세요! Hello!', empty_trailing='№') == "ㅇㅏㄴㄴㅕㅇㅎㅏ№ㅅㅔ№ㅇㅛ№! Hello!"
     assert decompose('Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof') == 'Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof'
